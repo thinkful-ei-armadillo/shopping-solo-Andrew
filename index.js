@@ -6,8 +6,8 @@ const STORE = {
 		{name: 'oranges', checked: false},
 		{name: 'milk', checked: true},
 		{name: 'bread', checked: false}
-    ],
-    hideChecked: true
+	],
+	hideChecked: false
 };
 
 function generateItemElement(item, itemIndex, template) {
@@ -25,7 +25,6 @@ function generateItemElement(item, itemIndex, template) {
     </li>`;
 }
 
-
 function generateShoppingItemsString(shoppingList) {
 	console.log('Generating shopping list element');
 
@@ -34,25 +33,43 @@ function generateShoppingItemsString(shoppingList) {
 	return items.join('');
 }
 
-
 function renderShoppingList() {
 	// render the shopping list in the DOM
 	console.log('`renderShoppingList` ran');
-    
-
-    const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+	const shoppingListItemsString = generateShoppingItemsString(STORE.items);
 	// insert that HTML into the DOM
 	$('.js-shopping-list').html(shoppingListItemsString);
 }
 
-function checkMarkBox(){
-    $('#checkbox_id').checked(function(){
-        console.log('Checkmark working');
-    });
-    // if (STORE.hideChecked) {
-    //     STORE.hideChecked = !STORE.hideChecked;
-    // }
+function handleCheckboxClicked(){
+	$('#checkbox_id').click(function(){
+		console.log('Checkmark working');
+		if(!STORE.hideChecked){
+			STORE.hideChecked = !STORE.hideChecked;
+			const filteredItems = STORE.items.filter(element =>!element.checked);
+			$('.js-shopping-list').html(generateShoppingItemsString(filteredItems));
+		}
+		else if (STORE.hideChecked){
+            STORE.hideChecked = !STORE.hideChecked;
+			const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+			$('.js-shopping-list').html(shoppingListItemsString);
+		}
+	});
 }
+
+// function checkMarkBox(){
+//     $('#checkbox_id').click(function(){
+//         console.log('Checkmark working');
+//         if (!STORE.hideChecked) {
+//             STORE.hideChecked = !STORE.hideChecked;
+//         }
+//         const filteredItems = STORE.items.filter(function(element){
+//             return element.checked === true;
+//         });
+//         const indexFilteredItem = getItemIndexFromElement(filteredItems);
+//         STORE.items.splice(indexFilteredItem);
+//     });
+// }
 
 function addItemToShoppingList(itemName) {
 	console.log(`Adding "${itemName}" to shopping list`);
@@ -74,7 +91,6 @@ function toggleCheckedForListItem(itemIndex) {
 	console.log('Toggling checked property for item at index ' + itemIndex);
 	STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
-
 
 function getItemIndexFromElement(item) {
 	const itemIndexString = $(item)
@@ -115,8 +131,8 @@ function handleShoppingList() {
 	renderShoppingList();
 	handleNewItemSubmit();
 	handleItemCheckClicked();
-    handleDeleteItemClicked();
-    checkMarkBox();
+	handleDeleteItemClicked();
+	handleCheckboxClicked();
 }
 
 // when the page loads, call `handleShoppingList`
