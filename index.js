@@ -7,7 +7,8 @@ const STORE = {
 		{name: 'milk', checked: true},
 		{name: 'bread', checked: false}
 	],
-	hideChecked: false
+    hideChecked: false,
+    filter: false
 };
 
 function generateItemElement(item, itemIndex, template) {
@@ -36,37 +37,56 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
 	// render the shopping list in the DOM
 	console.log('`renderShoppingList` ran');
-	if (STORE.hideChecked){
-        const filteredItems = STORE.items.filter(element =>!element.checked);
-        $('.js-shopping-list').html(generateShoppingItemsString(filteredItems));
+    if (STORE.filter){
+        STORE.filter = !STORE.filter;
+        const filterItemName = $('.js-filtered-display-entry').val();
+        const filteredArray = filterThroughSTORE(filterItemName);
+        const filteredSubmissionString = generateShoppingItemsString(filteredArray);
+        $('.js-shopping-list').html(filteredSubmissionString);
     }
-    else {
-        const shoppingListItemsString = generateShoppingItemsString(STORE.items);
-        $('.js-shopping-list').html(shoppingListItemsString);
-    }
+    else if (STORE.hideChecked){
+		const filteredItems = STORE.items.filter(element =>!element.checked);
+		$('.js-shopping-list').html(generateShoppingItemsString(filteredItems));
+	}
+	else {
+		const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+		$('.js-shopping-list').html(shoppingListItemsString);
+	}
 }
 
 function handleCheckboxClicked(){
+    // Event listener for the checkbox
+    // We do not want this function doing any rendering of the HTML
+    // Thus, we call renderShoppingList and also add conditionals to THAT function
 	$('#checkbox_id').click(function(){
 		console.log('Checkmark working');
-        STORE.hideChecked = !STORE.hideChecked;	
-        renderShoppingList();	
+		STORE.hideChecked = !STORE.hideChecked;	
+		renderShoppingList();	
 	});
 }
 
-// function checkMarkBox(){
-//     $('#checkbox_id').click(function(){
-//         console.log('Checkmark working');
-//         if (!STORE.hideChecked) {
-//             STORE.hideChecked = !STORE.hideChecked;
-//         }
-//         const filteredItems = STORE.items.filter(function(element){
-//             return element.checked === true;
-//         });
-//         const indexFilteredItem = getItemIndexFromElement(filteredItems);
-//         STORE.items.splice(indexFilteredItem);
-//     });
-// }
+function handleFilterSubmission(itemName){
+    // When submitted, take the text
+    // Filter the text through the displayed items
+    // Change the render function to change the HTML to only the filtered items
+    // Call the render function
+    // How do I get it to meet a different condition of the render function?
+    $('#js-filtered-list-form').submit(function(event){
+        event.preventDefault();
+        console.log('Filter button is working');
+        STORE.filter = !STORE.filter;
+        // const filterItemName = $('.js-filtered-display-entry').val();
+        // const filteredArray = filterThroughSTORE(filterItemName);
+        // console.log(filteredArray);
+        renderShoppingList();
+    });
+}
+
+function filterThroughSTORE (filterItem){
+    return STORE.items.filter(function(item){
+        return item.name === filterItem;
+    });
+}
 
 function addItemToShoppingList(itemName) {
 	console.log(`Adding "${itemName}" to shopping list`);
@@ -125,7 +145,8 @@ function handleDeleteItemClicked() {
 // that handle new item submission and user clicks on the "check" and "delete" buttons
 // for individual shopping list items.
 function handleShoppingList() {
-	renderShoppingList();
+    renderShoppingList();
+    handleFilterSubmission()
 	handleNewItemSubmit();
 	handleItemCheckClicked();
 	handleDeleteItemClicked();

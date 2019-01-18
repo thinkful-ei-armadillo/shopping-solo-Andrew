@@ -15,15 +15,15 @@
             <label for="shopping-list-entry">Add an item</label>
             <input type="text" name="shopping-list-entry" class="js-shopping-list-entry" placeholder="e.g., broccoli">
             <button type="submit">Add item</button>
-            <div>
-                <label for="filtered-display-entry">Find an item</label>
-                <input type="text" name="filtered-display-entry" class="js-filtered-display-entry" placeholder="e.g., apple">
-                <button type="submit">Filter item</button>
-            </div>
+        </form>
+        <form id="js-filtered-list-form">
+            <label for="filtered-display-entry">Find an item</label>
+            <input type="text" name="filtered-display-entry" class="js-filtered-display-entry" placeholder="e.g., apple">
+            <button type="submit">Filter item</button>
         </form>
         <div class="filters">
             <input type="checkbox" name="checkbox" id="checkbox_id" value="value">
-            <label for="checkbox_id">Hide items</label>
+            <label for="checkbox_id">Hide checked items</label>
         </div> 
         <ul class="shopping-list js-shopping-list">
         </ul>
