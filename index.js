@@ -36,24 +36,21 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
 	// render the shopping list in the DOM
 	console.log('`renderShoppingList` ran');
-	const shoppingListItemsString = generateShoppingItemsString(STORE.items);
-	// insert that HTML into the DOM
-	$('.js-shopping-list').html(shoppingListItemsString);
+	if (STORE.hideChecked){
+        const filteredItems = STORE.items.filter(element =>!element.checked);
+        $('.js-shopping-list').html(generateShoppingItemsString(filteredItems));
+    }
+    else {
+        const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+        $('.js-shopping-list').html(shoppingListItemsString);
+    }
 }
 
 function handleCheckboxClicked(){
 	$('#checkbox_id').click(function(){
 		console.log('Checkmark working');
-		if(!STORE.hideChecked){
-			STORE.hideChecked = !STORE.hideChecked;
-			const filteredItems = STORE.items.filter(element =>!element.checked);
-			$('.js-shopping-list').html(generateShoppingItemsString(filteredItems));
-		}
-		else if (STORE.hideChecked){
-            STORE.hideChecked = !STORE.hideChecked;
-			const shoppingListItemsString = generateShoppingItemsString(STORE.items);
-			$('.js-shopping-list').html(shoppingListItemsString);
-		}
+        STORE.hideChecked = !STORE.hideChecked;	
+        renderShoppingList();	
 	});
 }
 
