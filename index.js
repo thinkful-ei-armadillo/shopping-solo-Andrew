@@ -44,30 +44,13 @@ function generateItemElement(item, index) {
     </li>`;}
 }
 
-// function handleEditItemClicked(){
-// 	$('.js-shopping-list').submit(function(event){
-// 		event.preventDefault();
-// 		console.log('Edit submitting');
-// 		console.log($(event.target).index());
-// 		// const edittedItemIndex = $(event.target).index();
-// 		// const edittedItemName = $('.js-shopping-item').val();
-// 		// console.log(edittedItemName);
-// 		// generateItemElement(item, edittedItemIndex);
-// 		renderShoppingList();
-		
-// 	});
-// }
-
 function handleEditItemClicked(){
 	$('.shopping-list').on('submit', '.js-edit-item', function(event){
 		event.preventDefault();
 		const editItemName = $(event.currentTarget);
 		const editIndex = getItemIndexFromElement(editItemName);
 		console.log(editIndex);
-		// const editItemIndex = 0;
-		// console.log(editItemIndex);
 		STORE.items[editIndex].name = editItemName.find('.shopping-item').val();
-		// const editHTML = generateItemElement(editItemName, 0);
 		renderShoppingList();
 	});
 }
@@ -114,19 +97,17 @@ function handleCheckboxClicked(){
 	});
 }
 
-function handleFilterSubmission(itemName){
+function handleFilterSubmission(){
 	// When submitted, take the text
 	// Filter the text through the displayed items
 	// Change the render function to change the HTML to only the filtered items
 	// Call the render function
 	// How do I get it to meet a different condition of the render function?
+
 	$('#js-filtered-list-form').submit(function(event){
 		event.preventDefault();
 		console.log('Filter button is working');
 		STORE.filter = !STORE.filter;
-		// const filterItemName = $('.js-filtered-display-entry').val();
-		// const filteredArray = filterThroughSTORE(filterItemName);
-		// console.log(filteredArray);
 		renderShoppingList();
 	});
 }
@@ -201,7 +182,6 @@ function handleShoppingList() {
 	handleDeleteItemClicked();
 	handleCheckboxClicked();
 	handleEditItemClicked();
-	// handleTitleChangeClicked();
 }
 
 // when the page loads, call `handleShoppingList`
